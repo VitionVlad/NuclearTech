@@ -41,9 +41,11 @@ class NuclearTechVk{
         loadobj(path, render.vertexpos, render.totalv, begpos);
         render.CreateVertexInput();
     }
-    void Update(GLFWkeyfun keyfun, bool mouselook){
+    void Update(GLFWkeyfun keyfun, bool mouselook, bool collisionenable){
         glfwSetKeyCallback(render.window, keyfun);
-        colision.calculateCollision(render.vertexpos, render.totalv, render.pos);
+        if(collisionenable == true){
+            colision.calculateCollision(render.vertexpos, render.totalv, render.pos);
+        }
         if(mouselook == true){
             glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
             render.rot.x = rawm.x / sensivity;
@@ -56,7 +58,9 @@ class NuclearTechVk{
             }
         }
         render.Draw();
-        colision.updateLastCoord(render.pos);
+        if(collisionenable == true){
+            colision.updateLastCoord(render.pos);
+        }
     }
     void End(){
         render.Destroy();
