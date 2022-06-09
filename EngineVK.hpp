@@ -34,6 +34,9 @@ class NuclearTechVk{
     dvec2 rawm;
     public:
     float sensivity = 1000;
+    bool mouselook;
+    bool collisionenable;
+    bool enablephysics;
     void Init(){
         render.Init();
     }
@@ -41,7 +44,12 @@ class NuclearTechVk{
         loadobj(path, render.vertexpos, render.totalv, begpos);
         render.CreateVertexInput();
     }
-    void Update(GLFWkeyfun keyfun, bool mouselook, bool collisionenable){
+    void physwork(){
+        if(colision.colide == false){
+            render.pos.y = render.pos.y - 0.1;
+        }
+    }
+    void Update(GLFWkeyfun keyfun){
         glfwSetKeyCallback(render.window, keyfun);
         if(collisionenable == true){
             colision.calculateCollision(render.vertexpos, render.totalv, render.pos);
@@ -60,6 +68,9 @@ class NuclearTechVk{
         render.Draw();
         if(collisionenable == true){
             colision.updateLastCoord(render.pos);
+        }
+        if(enablephysics == true){
+            physwork();
         }
     }
     void End(){
