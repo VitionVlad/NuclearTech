@@ -9,6 +9,8 @@ using namespace glm;
 class CollWork{
     public:
     vec3 lastpos;
+    bool colide;
+    bool allowmove = true;
     void updateLastCoord(vec3 pos){
         lastpos = pos;
     }
@@ -16,8 +18,15 @@ class CollWork{
         return ((mx-high)*(mx-low) <= 0);
     }
     void vertexCollision(vec3 vertpos, vec3 &pos){
-        if(inRange(vertpos.x-0.02,vertpos.x+0.02, pos.x)&&inRange(vertpos.y-0.02,vertpos.y+0.02, pos.y)&&inRange(vertpos.z-0.02,vertpos.z+0.02, pos.z)){
-            pos = lastpos;
+        if(inRange(vertpos.x-0.01,vertpos.x+0.01, pos.x)&&inRange(vertpos.z-0.01,vertpos.z+0.01, pos.z)&&inRange(vertpos.y-0.01,vertpos.y+0.1, pos.y)){
+            pos.y = lastpos.y;
+            colide = true;
+            if(vertpos.y > pos.y){
+                pos.x = lastpos.x;
+                pos.z = lastpos.z;
+            }
+        }else{
+            colide = false;
         }
     }
     void calculateCollision(vec3 vertex[9999999], int totalvertex, vec3 &pos){
