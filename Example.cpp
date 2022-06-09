@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "EngineVK.hpp"
+#include <NuclearTech/EngineVK.hpp>
 
 NuclearTechVk Engine;
 
@@ -8,31 +8,24 @@ float usrfov = 110;
 
 int main(){
     glfwInit();
-    //yes, you need to init window
     glfwWindowHint(GLFW_RESIZABLE, 0);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     render.window = glfwCreateWindow(render.resolution.x, render.resolution.y, "", NULL, NULL);
-    //just some init shit
-    render.totalv = 0;
-    render.pos.z = -8;
-    //engine init
+    render.pos.y = 5;
     Engine.Init();
-    //obj load example
-    //theoreticaly you can do this each frame, but it will be slow, it should go after engine init
-    Engine.objwork("App/test.obj", 0);
+    Engine.objwork("App/Models/test.obj", 0);
     glfwSetInputMode(render.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //some bullshit to write fps into tittle bar
     double lastTime = glfwGetTime();
     int nbFrames = 0;
     string tittle;
     double currentTime;
+    Engine.mouselook = true;
+    Engine.collisionenable = true;
+    Engine.enablephysics = true;
     while(!glfwWindowShouldClose(render.window)){
-        //poll events
         glfwPollEvents();
-        //writing your fov and drawing frame
         render.fov = usrfov;
-        Engine.Update(movecallback, true);
-        //writing fps into tittle bar
+        Engine.Update(movecallback);
         currentTime = glfwGetTime();
         nbFrames++;
         if ( currentTime - lastTime >= 1.0 ){
@@ -42,7 +35,6 @@ int main(){
             lastTime += 1.0;
         }
     }
-    //destroyng everything
     Engine.End();
     glfwDestroyWindow(render.window);
 }
