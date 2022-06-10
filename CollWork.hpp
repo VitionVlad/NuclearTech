@@ -18,10 +18,10 @@ class CollWork{
         return ((mx-high)*(mx-low) <= 0);
     }
     void vertexCollision(vec3 vertpos, vec3 &pos){
-        if(inRange(vertpos.x-0.01,vertpos.x+0.01, pos.x)&&inRange(vertpos.z-0.01,vertpos.z+0.01, pos.z)&&inRange(vertpos.y-0.01,vertpos.y+0.1, pos.y)){
+        if(inRange(pos.x-0.5,pos.x+0.5, vertpos.x)&&inRange(pos.z-0.5,pos.z+0.5, vertpos.z)&&inRange(pos.y-1.8,pos.y+0.2, vertpos.y)){
             pos.y = lastpos.y;
             colide = true;
-            if(vertpos.y > pos.y){
+            if(vertpos.y > pos.y - 1.6){
                 pos.x = lastpos.x;
                 pos.z = lastpos.z;
             }
