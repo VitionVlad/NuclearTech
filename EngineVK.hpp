@@ -44,6 +44,10 @@ class NuclearTechVk{
         loadobj(path, render.vertexpos, render.totalv, begpos);
         render.CreateVertexInput();
     }
+    void plywork(const char* path, int begpos){
+        loadply(path, render.vertexpos, render.totalv, begpos);
+        render.CreateVertexInput();
+    }
     void physwork(){
         if(colision.colide == false){
             render.pos.y = render.pos.y - 0.1;
