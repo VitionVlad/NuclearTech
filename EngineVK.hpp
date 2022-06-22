@@ -44,8 +44,15 @@ class NuclearTechVk{
         loadobj(path, render.vertexpos, render.totalv, begpos);
         render.CreateVertexInput();
     }
-    void plywork(const char* path, int begpos){
-        loadply(path, render.vertexpos, render.totalv, begpos);
+    void plywork(const char* path, int begpos, bool color){
+        switch(color){
+            case 0:
+            loadply(path, render.vertexpos, render.totalv, begpos);
+            break;
+            case 1:
+            loadplycolor(path, render.vertexpos, render.totalv, begpos);
+            break;
+        }
         render.CreateVertexInput();
     }
     void physwork(){
