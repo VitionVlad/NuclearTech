@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <NuclearTech/EngineVK.hpp>
+#include "EngineVK.hpp"
 
 NuclearTechVk Engine;
 
@@ -11,17 +11,18 @@ int main(){
     glfwWindowHint(GLFW_RESIZABLE, 0);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     render.window = glfwCreateWindow(render.resolution.x, render.resolution.y, "", NULL, NULL);
-    render.pos.y = 5;
+    render.vshaderpath = "Engine/raw/vert.spv";
+    render.fshaderpath = "Engine/raw/frag.spv";
     Engine.Init();
-    Engine.objwork("App/Models/test.obj", 0);
+    Engine.plywork("App/Models/untitled.ply", 0, true);
     glfwSetInputMode(render.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     double lastTime = glfwGetTime();
     int nbFrames = 0;
     string tittle;
     double currentTime;
     Engine.mouselook = true;
-    Engine.collisionenable = true;
-    Engine.enablephysics = true;
+    Engine.collisionenable = false;
+    Engine.enablephysics = false;
     while(!glfwWindowShouldClose(render.window)){
         glfwPollEvents();
         render.fov = usrfov;
