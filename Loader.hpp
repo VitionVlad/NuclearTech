@@ -115,7 +115,7 @@ void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
 	}
 	for(int i = 0; i != line; i++){
 		fscanf(obj, "%f %f %f", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z);
-		lvertex[line].w = 1;
+		lvertex[i].w = 1;
 	}
 	for(int i = 0; i != faceline*3; i+=3){
 		int p;
