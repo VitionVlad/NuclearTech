@@ -12,13 +12,13 @@ using namespace std;
 
 using namespace glm;
 
-vec3 lvertex[9999999];
+vec4 lvertex[9999999];
 
-ivec3 lvertexcol[9999999];
+ivec4 lvertexcol[9999999];
 
 int indices[9999999];
 
-void loadobj(const char* path, vec3 *vertex, int &totalvert, int begvertpos){
+void loadobj(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
     FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -51,6 +51,7 @@ void loadobj(const char* path, vec3 *vertex, int &totalvert, int begvertpos){
 
 		if (strcmp(lineHeader, "v") == 0) {
 			fscanf(obj, "%f %f %f \n", &lvertex[line].x, &lvertex[line].y, &lvertex[line].z);
+			lvertex[line].w = 1;
 			line++;
 		}
 
@@ -66,7 +67,7 @@ void loadobj(const char* path, vec3 *vertex, int &totalvert, int begvertpos){
     }
 }
 
-void loadply(const char* path, vec3 *vertex, int &totalvert, int begvertpos){
+void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -114,6 +115,7 @@ void loadply(const char* path, vec3 *vertex, int &totalvert, int begvertpos){
 	}
 	for(int i = 0; i != line; i++){
 		fscanf(obj, "%f %f %f", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z);
+		lvertex[line].w = 1;
 	}
 	for(int i = 0; i != faceline*3; i+=3){
 		int p;
@@ -126,7 +128,7 @@ void loadply(const char* path, vec3 *vertex, int &totalvert, int begvertpos){
     }
 }
 
-void loadplycolor(const char* path, vec3 *vertex, ivec3 *vertexcol, int &totalvert, int begvertpos){
+void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -173,8 +175,7 @@ void loadplycolor(const char* path, vec3 *vertex, ivec3 *vertexcol, int &totalve
 		}
 	}
 	for(int i = 0; i != line; i++){
-		int g;
-		fscanf(obj, "%f %f %f %d %d %d %d", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z, &lvertexcol[i].x, &lvertexcol[i].y, &lvertexcol[i].z, &g);
+		fscanf(obj, "%f %f %f %d %d %d %d", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z, &lvertexcol[i].x, &lvertexcol[i].y, &lvertexcol[i].z, &lvertexcol[i].w);
 	}
 	for(int i = 0; i != faceline*3; i+=3){
 		int p;
@@ -183,7 +184,6 @@ void loadplycolor(const char* path, vec3 *vertex, ivec3 *vertexcol, int &totalve
 	fclose(obj);
     for(int i = 0; i != faceline*3; i++){
         vertex[i+begvertpos] = lvertex[indices[i]];
-		vertexcol[i+begvertpos] = lvertexcol[indices[i]];
         totalvert++;
     }
 }
