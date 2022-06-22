@@ -14,7 +14,7 @@ using namespace glm;
 
 vec4 lvertex[9999999];
 
-ivec4 lvertexcol[9999999];
+ivec3 lvertexcol[9999999];
 
 int indices[9999999];
 
@@ -128,6 +128,10 @@ void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
     }
 }
 
+float packColor(vec3 color) {
+    return color.r+(color.g*0.001)+(color.b*0.000001);
+}
+
 void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
 	FILE* obj;
 	//fopen(obj, path, "r");
@@ -175,7 +179,8 @@ void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos
 		}
 	}
 	for(int i = 0; i != line; i++){
-		fscanf(obj, "%f %f %f %d %d %d %d", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z, &lvertexcol[i].x, &lvertexcol[i].y, &lvertexcol[i].z, &lvertexcol[i].w);
+		int a;
+		fscanf(obj, "%f %f %f %d %d %d %d", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z, &lvertexcol[i].x, &lvertexcol[i].y, &lvertexcol[i].z, &a);
 	}
 	for(int i = 0; i != faceline*3; i+=3){
 		int p;
@@ -184,6 +189,7 @@ void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos
 	fclose(obj);
     for(int i = 0; i != faceline*3; i++){
         vertex[i+begvertpos] = lvertex[indices[i]];
+		vertex[i+begvertpos].w = packColor(lvertexcol[indices[i]]);
         totalvert++;
     }
 }
