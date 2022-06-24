@@ -18,7 +18,7 @@ ivec3 lvertexcol[9999999];
 
 int indices[9999999];
 
-void loadobj(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
+void loadobj(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec3 pos){
     FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -62,12 +62,15 @@ void loadobj(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
 	}
 	fclose(obj);
     for(int i = 0; i != faceline; i++){
-        vertex[i+begvertpos] = lvertex[indices[i]];
+        vertex[i+begvertpos].x = lvertex[indices[i]].x + pos.x;
+		vertex[i+begvertpos].y = lvertex[indices[i]].y + pos.y;
+		vertex[i+begvertpos].z = lvertex[indices[i]].z + pos.z;
+		vertex[i+begvertpos].w = 1.0f;
         totalvert++;
     }
 }
 
-void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
+void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec3 pos){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -123,7 +126,10 @@ void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
 	}
 	fclose(obj);
     for(int i = 0; i != faceline*3; i++){
-        vertex[i+begvertpos] = lvertex[indices[i]];
+        vertex[i+begvertpos].x = lvertex[indices[i]].x + pos.x;
+		vertex[i+begvertpos].y = lvertex[indices[i]].y + pos.y;
+		vertex[i+begvertpos].z = lvertex[indices[i]].z + pos.z;
+		vertex[i+begvertpos].w = 1.0f;
         totalvert++;
     }
 }
@@ -132,7 +138,7 @@ float packColor(vec3 color) {
     return color.r+(color.g*0.001)+(color.b*0.000001);
 }
 
-void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos){
+void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec3 pos){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -188,7 +194,9 @@ void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos
 	}
 	fclose(obj);
     for(int i = 0; i != faceline*3; i++){
-        vertex[i+begvertpos] = lvertex[indices[i]];
+        vertex[i+begvertpos].x = lvertex[indices[i]].x + pos.x;
+		vertex[i+begvertpos].y = lvertex[indices[i]].y + pos.y;
+		vertex[i+begvertpos].z = lvertex[indices[i]].z + pos.z;
 		vertex[i+begvertpos].w = packColor(lvertexcol[indices[i]]);
         totalvert++;
     }
