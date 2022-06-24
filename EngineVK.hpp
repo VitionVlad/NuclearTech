@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <thread>
+
 #include <MagmaVK/MagmaVK.hpp>
 
 #include "Loader.hpp"
@@ -32,6 +34,8 @@ void movecallback(GLFWwindow* window, int key, int scancode, int action, int mod
 class NuclearTechVk{
     private:
     dvec2 rawm;
+    double lastTime = glfwGetTime();
+    double currentTime;
     public:
     float sensivity = 1000;
     bool mouselook;
@@ -40,24 +44,17 @@ class NuclearTechVk{
     void Init(){
         render.Init();
     }
-    void objwork(const char* path, int begpos){
-        loadobj(path, render.vertexpos, render.totalv, begpos);
-        render.CreateVertexInput();
+    void objwork(const char* path, int begpos, vec3 pos){
+        loadobj(path, render.vertexpos, render.totalv, begpos, pos);
     }
-    void plywork(const char* path, int begpos, bool color){
+    void plywork(const char* path, int begpos, bool color, vec3 pos){
         switch(color){
             case 0:
-            loadply(path, render.vertexpos, render.totalv, begpos);
+            loadply(path, render.vertexpos, render.totalv, begpos, pos);
             break;
             case 1:
-            loadplycolor(path, render.vertexpos, render.totalv, begpos);
+            loadplycolor(path, render.vertexpos, render.totalv, begpos, pos);
             break;
-        }
-        render.CreateVertexInput();
-    }
-    void physwork(){
-        if(colision.colide == false){
-            render.pos.y = render.pos.y - 0.1;
         }
     }
     void Update(GLFWkeyfun keyfun){
@@ -81,7 +78,7 @@ class NuclearTechVk{
             colision.updateLastCoord(render.pos);
         }
         if(enablephysics == true){
-            physwork();
+            colision.physwork(render.pos);
         }
     }
     void End(){
