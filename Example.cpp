@@ -16,7 +16,6 @@ int main(){
     render.pos.y = 10;
     Engine.Init();
     Engine.plywork("App/Models/untitled.ply", 0, true, vec3(0, 0, 0));
-    Engine.plywork("App/Models/prop.ply", render.totalv, true, vec3(1, 3, -2));
     glfwSetInputMode(render.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     double lastTime = glfwGetTime();
     int nbFrames = 0;
@@ -25,10 +24,14 @@ int main(){
     Engine.mouselook = true;
     Engine.collisionenable = true;
     Engine.enablephysics = true;
+    Animation anim1;
+    anim1.begpos = render.totalv;
+    anim1.totalframes = 2;
     while(!glfwWindowShouldClose(render.window)){
         glfwPollEvents();
         render.fov = usrfov;
         Engine.Update(movecallback);
+        anim1.Play(vec3(0, 2, -3), render.vertexpos, render.totalv);
         currentTime = glfwGetTime();
         nbFrames++;
         if ( currentTime - lastTime >= 1.0 ){
