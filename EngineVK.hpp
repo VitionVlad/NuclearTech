@@ -4,9 +4,9 @@
 
 #include <MagmaVK/MagmaVK.hpp>
 
-#include "Loader.hpp"
-
 #include "CollWork.hpp"
+
+#include "Animation.hpp"
 
 MagmaVK render;
 
