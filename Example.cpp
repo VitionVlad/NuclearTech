@@ -24,14 +24,20 @@ int main(){
     Engine.mouselook = true;
     Engine.collisionenable = true;
     Engine.enablephysics = true;
-    Animation anim1;
-    anim1.begpos = render.totalv;
-    anim1.totalframes = 2;
+
+    Prop prop1;
+    prop1.begpos = render.totalv;
+    Engine.plywork("App/Models/prop.ply", render.totalv, true, vec3(0, 0, 0));
+    prop1.pos = vec3(0, 15, -3);
+    prop1.finpos = render.totalv;
+    prop1.saveprop(render.vertexpos);
+    prop1.setsize(vec2(0.25, 0.25), vec2(1, 1), 0);
+
     while(!glfwWindowShouldClose(render.window)){
         glfwPollEvents();
         render.fov = usrfov;
         Engine.Update(movecallback);
-        anim1.Play(vec3(0, 2, -3), render.vertexpos, render.totalv);
+        prop1.updateProp(render.vertexpos, render.pos, Engine.speed);
         currentTime = glfwGetTime();
         nbFrames++;
         if ( currentTime - lastTime >= 1.0 ){
