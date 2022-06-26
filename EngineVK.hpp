@@ -4,7 +4,7 @@
 
 #include <MagmaVK/MagmaVK.hpp>
 
-#include "CollWork.hpp"
+#include "Prop.hpp"
 
 #include "Animation.hpp"
 
@@ -33,10 +33,10 @@ void movecallback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 class NuclearTechVk{
     private:
+    vec2 oldpos;
     dvec2 rawm;
-    double lastTime = glfwGetTime();
-    double currentTime;
     public:
+    vec2 speed;
     float sensivity = 1000;
     bool mouselook;
     bool collisionenable;
@@ -59,6 +59,16 @@ class NuclearTechVk{
     }
     void Update(GLFWkeyfun keyfun){
         glfwSetKeyCallback(render.window, keyfun);
+        if(oldpos.x != render.pos.x && oldpos.y != render.pos.z){
+            speed.x = render.pos.x - oldpos.x;
+            speed.y = render.pos.z - oldpos.y; 
+            oldpos.x = render.pos.x;
+            oldpos.y = render.pos.z;
+        }
+        if(oldpos.x == render.pos.x && oldpos.y == render.pos.y){
+            speed.x = 0;
+            speed.y = 0;
+        }
         if(collisionenable == true){
             colision.calculateCollision(render.vertexpos, render.totalv, render.pos);
         }
