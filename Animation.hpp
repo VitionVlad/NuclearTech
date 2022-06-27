@@ -48,3 +48,21 @@ class Animation{
         }
     }
 };
+
+class camAnimation{
+    private:
+    int currfr;
+    public:
+    vec3 campos[60];
+    vec2 rotf[60];
+    int finfr;
+    void Play(vec3 &pos, vec2 &rot){
+        pos = campos[currfr];
+        rot = rotf[currfr];
+        if(currfr == finfr){
+            currfr = 0;
+        }else{
+            currfr++;
+        }
+    }
+};
