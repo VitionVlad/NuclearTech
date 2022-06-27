@@ -19,6 +19,8 @@ class Prop{
     bool enablep = true;
     bool enablec = true;
     bool enablepi = true;
+    bool enablepip = true;
+    bool playerinteracted;
     void setsize(vec2 updown, vec2 border, float allwdown){
         propcolision.borders = border;
         propcolision.height = updown.y;
@@ -49,8 +51,13 @@ class Prop{
         }
         changepos(vertex);
         if(inRange(pPos.z - propcolision.borders.y-1, pPos.z + propcolision.borders.y+1, -pos.z)&&inRange(pPos.x - propcolision.borders.x-1, pPos.x + propcolision.borders.x+1, -pos.x)&&enablepi==true){
-            pos.z-=speed.y;
-            pos.x-=speed.x;
+            if(enablepip == true){
+                pos.z-=speed.y;
+                pos.x-=speed.x;
+            }
+            playerinteracted = true;
+        }else{
+            playerinteracted = false;
         }
     }
 };
