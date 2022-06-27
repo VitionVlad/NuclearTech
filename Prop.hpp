@@ -18,6 +18,7 @@ class Prop{
     CollWork propcolision;
     bool enablep = true;
     bool enablec = true;
+    bool enablepi = true;
     void setsize(vec2 updown, vec2 border, float allwdown){
         propcolision.borders = border;
         propcolision.height = updown.y;
@@ -47,7 +48,7 @@ class Prop{
             propcolision.physwork(pos);
         }
         changepos(vertex);
-        if(inRange(pPos.z - propcolision.borders.y-1, pPos.z + propcolision.borders.y+1, -pos.z)&&inRange(pPos.x - propcolision.borders.x-1, pPos.x + propcolision.borders.x+1, -pos.x)){
+        if(inRange(pPos.z - propcolision.borders.y-1, pPos.z + propcolision.borders.y+1, -pos.z)&&inRange(pPos.x - propcolision.borders.x-1, pPos.x + propcolision.borders.x+1, -pos.x)&&enablepi==true){
             pos.z-=speed.y;
             pos.x-=speed.x;
         }
