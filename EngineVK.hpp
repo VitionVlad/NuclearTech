@@ -76,11 +76,11 @@ class NuclearTechVk{
             glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
             render.rot.x = rawm.x / sensivity;
             render.rot.y = -rawm.y / sensivity;
-            if(render.rot.x < -1.4){
-                render.rot.x = -1.38;
+            if(render.rot.x < -1.5){
+                render.rot.x = -1.5;
             }
-            if(render.rot.x > 1.4){
-                render.rot.x = 1.38;
+            if(render.rot.x > 1.5){
+                render.rot.x = 1.5;
             }
         }
         render.Draw();
