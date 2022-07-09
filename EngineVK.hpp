@@ -8,26 +8,32 @@
 
 #include "Animation.hpp"
 
+float pSpeed = 0.1;
+
 MagmaVK render;
 
 CollWork colision;
 
 void movecallback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    float factor = render.rot.x;
+    if(render.rot.x > 1.5){
+        factor = -(factor - 3);
+    }
     if (key == GLFW_KEY_W && action == GLFW_REPEAT){
-        render.pos.z = render.pos.z + 0.1;
-        render.pos.x = render.pos.x - render.rot.x / 10;
+        render.pos.z = render.pos.z + pSpeed;
+        render.pos.x = render.pos.x - factor / 10;
     }
     if (key == GLFW_KEY_A && action == GLFW_REPEAT){
-        render.pos.x = render.pos.x + 0.1;
-        render.pos.z = render.pos.z + render.rot.x / 10;
+        render.pos.x = render.pos.x + pSpeed;
+        render.pos.z = render.pos.z + factor / 10;
     }
     if (key == GLFW_KEY_S && action == GLFW_REPEAT){
-        render.pos.z = render.pos.z - 0.1;
-        render.pos.x = render.pos.x + render.rot.x / 10;
+        render.pos.z = render.pos.z - pSpeed;
+        render.pos.x = render.pos.x + factor / 10;
     }
     if (key == GLFW_KEY_D && action == GLFW_REPEAT){
-        render.pos.x = render.pos.x - 0.1;
-        render.pos.z = render.pos.z - render.rot.x / 10;
+        render.pos.x = render.pos.x - pSpeed;
+        render.pos.z = render.pos.z - factor / 10;
     }
 }
 
@@ -57,6 +63,27 @@ class NuclearTechVk{
             break;
         }
     }
+    void CreateProp(Prop prop, const char* pathtomodel, int modeltype, vec2 updown, vec2 border, float allwdown){
+        prop.begpos = render.totalv;
+        switch (modeltype){
+        case 0:
+        objwork("App/Models/prop.ply", render.totalv, vec3(0, 0, 0));
+            break;
+         case 1:
+        plywork("App/Models/prop.ply", render.totalv, false, vec3(0, 0, 0));
+            break;
+         case 2:
+        plywork("App/Models/prop.ply", render.totalv, true, vec3(0, 0, 0));
+            break;
+        default:
+        throw runtime_error("Error: Unknown model type");
+            break;
+        }
+        prop.pos = vec3(0, 0, 0);
+        prop.finpos = render.totalv;
+        prop.saveprop(render.vertexpos);
+        prop.setsize(updown, border, allwdown);
+    }
     void Update(GLFWkeyfun keyfun){
         glfwSetKeyCallback(render.window, keyfun);
         if(oldpos.x != render.pos.x && oldpos.y != render.pos.z){
@@ -76,11 +103,26 @@ class NuclearTechVk{
             glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
             render.rot.x = rawm.x / sensivity;
             render.rot.y = -rawm.y / sensivity;
-            if(render.rot.x < -1.5){
+            if(render.rot.x <= -1.5){
+                render.rot.x = 4.8;
+                glfwSetCursorPos(render.window, render.rot.x * sensivity, rawm.y);
+                pSpeed = -0.1;
+            }else if(render.rot.x >= 4.8){
                 render.rot.x = -1.5;
+                glfwSetCursorPos(render.window, render.rot.x * sensivity, rawm.y);
+                pSpeed = 0.1;
             }
-            if(render.rot.x > 1.5){
-                render.rot.x = 1.5;
+            else if(render.rot.x >= 1.5){
+                pSpeed = -0.1;
+            }else{
+                pSpeed = 0.1;
+            }
+
+            if(render.rot.y < -1.5){
+                render.rot.y = -1.5;
+            }
+            if(render.rot.y > 1.5){
+                render.rot.y = 1.5;
             }
         }
         render.Draw();
