@@ -43,6 +43,7 @@ class NuclearTechVk{
     bool mouselook;
     bool collisionenable;
     bool enablephysics;
+    vec2 mouseupdown = vec2(1.5, -1.5);
     void Init(){
         render.Init();
     }
@@ -99,11 +100,11 @@ class NuclearTechVk{
             glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
             render.rot.x = rawm.x / sensivity;
             render.rot.y = -rawm.y / sensivity;
-            if(render.rot.y < -1.5){
-                render.rot.y = -1.5;
+            if(render.rot.y < mouseupdown.y){
+                render.rot.y = mouseupdown.y;
             }
-            if(render.rot.y > 1.5){
-                render.rot.y = 1.5;
+            if(render.rot.y > mouseupdown.x){
+                render.rot.y = mouseupdown.x;
             }
         }
         render.Draw();
