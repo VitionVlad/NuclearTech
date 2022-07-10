@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <glm/gtx/rotate_vector.hpp>
+
 using namespace std;
 
 using namespace glm;
