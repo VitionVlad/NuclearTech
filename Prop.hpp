@@ -41,6 +41,13 @@ class Prop{
             vertex[i].z = propvertex[i].z + pos.z;
         }
     }
+    void rotatemod(vec4 *vertex, float angle, vec3 vector){
+        for(int i = begpos; i != finpos; i++){
+            vertex[i].x = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).x + pos.x;
+            vertex[i].y = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).y + pos.y;
+            vertex[i].z = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).z + pos.z; 
+        }
+    }
     void updateProp(vec4 *vertex, vec3 pPos, vec2 speed){
         if(enablec == true){
             propcolision.calculateCollision(vertex, begpos, pos);
