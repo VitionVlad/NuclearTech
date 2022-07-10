@@ -15,25 +15,21 @@ MagmaVK render;
 CollWork colision;
 
 void movecallback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    float factor = render.rot.x;
-    if(render.rot.x > 1.5){
-        factor = -(factor - 3);
-    }
     if (key == GLFW_KEY_W && action == GLFW_REPEAT){
-        render.pos.z = render.pos.z + pSpeed;
-        render.pos.x = render.pos.x - factor / 10;
+        render.pos.z += cos(render.rot.y) * cos(render.rot.x) * pSpeed;
+        render.pos.x += cos(render.rot.y) * sin(render.rot.x) * -pSpeed;
     }
     if (key == GLFW_KEY_A && action == GLFW_REPEAT){
-        render.pos.x = render.pos.x + pSpeed;
-        render.pos.z = render.pos.z + factor / 10;
+        render.pos.x += cos(render.rot.y) * cos(render.rot.x) * pSpeed;
+        render.pos.z -= cos(render.rot.y) * sin(render.rot.x) * -pSpeed;
     }
     if (key == GLFW_KEY_S && action == GLFW_REPEAT){
-        render.pos.z = render.pos.z - pSpeed;
-        render.pos.x = render.pos.x + factor / 10;
+        render.pos.z -= cos(render.rot.y) * cos(render.rot.x) * pSpeed;
+        render.pos.x -= cos(render.rot.y) * sin(render.rot.x) * -pSpeed;
     }
     if (key == GLFW_KEY_D && action == GLFW_REPEAT){
-        render.pos.x = render.pos.x - pSpeed;
-        render.pos.z = render.pos.z - factor / 10;
+        render.pos.x -= cos(render.rot.y) * cos(render.rot.x) * pSpeed;
+        render.pos.z += cos(render.rot.y) * sin(render.rot.x) * -pSpeed;
     }
 }
 
@@ -103,21 +99,6 @@ class NuclearTechVk{
             glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
             render.rot.x = rawm.x / sensivity;
             render.rot.y = -rawm.y / sensivity;
-            if(render.rot.x <= -1.5){
-                render.rot.x = 4.8;
-                glfwSetCursorPos(render.window, render.rot.x * sensivity, rawm.y);
-                pSpeed = -0.1;
-            }else if(render.rot.x >= 4.8){
-                render.rot.x = -1.5;
-                glfwSetCursorPos(render.window, render.rot.x * sensivity, rawm.y);
-                pSpeed = 0.1;
-            }
-            else if(render.rot.x >= 1.5){
-                pSpeed = -0.1;
-            }else{
-                pSpeed = 0.1;
-            }
-
             if(render.rot.y < -1.5){
                 render.rot.y = -1.5;
             }
