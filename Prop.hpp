@@ -44,7 +44,7 @@ class Prop{
     void rotatemod(vec4 *vertex, float angle, vec3 vector){
         for(int i = begpos; i != finpos; i++){
             vertex[i].x = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).x + pos.x;
-            vertex[i].y = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).y + pos.y;
+            vertex[i].y = rotate(vec3(propvertex[i].x, vertex[i].y, propvertex[i].z), angle, vector).y;
             vertex[i].z = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).z + pos.z; 
         }
     }
