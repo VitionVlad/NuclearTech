@@ -20,7 +20,7 @@ vec3 unpackColor(float f) {
 
 void main() {
     if(vertpos.w == 1000){
-        gl_Position = vec4(vertpos.x, vertpos.y, 0, 1);
+        gl_Position = vec4(vertpos.x, -vertpos.y, 0, 1);
         vertcolor = unpackColor(vertpos.z);
     }else if(vertpos.w == 2000){
         lightpos = vec3(vertpos.x, vertpos.y, vertpos.z);
