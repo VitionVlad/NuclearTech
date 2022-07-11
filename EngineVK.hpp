@@ -8,6 +8,8 @@
 
 #include "Animation.hpp"
 
+#include "Gui.hpp"
+
 float pSpeed = 0.1;
 
 MagmaVK render;
@@ -36,8 +38,8 @@ void movecallback(GLFWwindow* window, int key, int scancode, int action, int mod
 class NuclearTechVk{
     private:
     vec2 oldpos;
-    dvec2 rawm;
     public:
+    dvec2 rawm;
     vec2 speed;
     float sensivity = 1000;
     bool mouselook;
@@ -83,6 +85,7 @@ class NuclearTechVk{
     }
     void Update(GLFWkeyfun keyfun){
         glfwSetKeyCallback(render.window, keyfun);
+        glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
         if(oldpos.x != render.pos.x && oldpos.y != render.pos.z){
             speed.x = render.pos.x - oldpos.x;
             speed.y = render.pos.z - oldpos.y; 
@@ -97,7 +100,6 @@ class NuclearTechVk{
             colision.calculateCollision(render.vertexpos, render.totalv, render.pos);
         }
         if(mouselook == true){
-            glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
             render.rot.x = rawm.x / sensivity;
             render.rot.y = -rawm.y / sensivity;
             if(render.rot.y < mouseupdown.y){
