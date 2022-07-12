@@ -50,7 +50,9 @@ class Prop{
     }
     void updateProp(vec4 *vertex, vec3 pPos, vec2 speed){
         if(enablec == true){
-            propcolision.calculateCollision(vertex, begpos, pos);
+            vec3 Hpos = vec3(-pos.x, pos.y, -pos.z);
+            propcolision.calculateCollision(vertex, begpos, Hpos);
+            pos = vec3(-Hpos.x, Hpos.y, -Hpos.z);
             propcolision.updateLastCoord(pos);
         }
         if(enablep == true){
