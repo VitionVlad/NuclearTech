@@ -86,19 +86,19 @@ class NuclearTechVk{
     void light(vec3 pos, float color, uint lightcnt){
         switch(lightcnt){
             case 1:
-            render.ubo.v1 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            render.ubo.v1 = vec4(pos.x, pos.y, pos.z, color);
             break;
             case 2:
-            render.ubo.v2 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            render.ubo.v2 = vec4(pos.x, pos.y, pos.z, color);
             break;
             case 3:
-            render.ubo.v3 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            render.ubo.v3 = vec4(pos.x, pos.y, pos.z, color);
             break;
             case 4:
-            render.ubo.v4 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            render.ubo.v4 = vec4(pos.x, pos.y, pos.z, color);
             break;
             case 5:
-            render.ubo.v5 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            render.ubo.v5 = vec4(pos.x, pos.y, pos.z, color);
             break;
             default:
             throw runtime_error("Fatal light error");
