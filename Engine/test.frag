@@ -15,13 +15,21 @@ layout(location = 1) in vec3 fragpos;
 
 layout(location = 0) out vec4 outColor;
 
+vec3 unpackColor(float f) {
+    vec3 color;
+    color.r = floor(f);
+    color.g = floor((f-color.r)*1000);
+    color.b = floor((((f-color.r)*1000)-color.g)*1000);
+    return color / 255;
+}
+
 void main() {
     float ambient = 0.1;
     vec3 lpos = vec3(ubo.v1.x, ubo.v1.y, ubo.v1.z);
     vec3 fincol;
     float light = distance(lpos, fragpos);
     if(light < 5){
-        fincol = vertcolor * 0.5;
+        fincol = vertcolor * 0.5 * unpackColor(ubo.v1.w);
     }else{
         fincol = vertcolor * ambient;
     }
