@@ -83,6 +83,28 @@ class NuclearTechVk{
         prop.saveprop(render.vertexpos);
         prop.setsize(updown, border, allwdown);
     }
+    void light(vec3 pos, float color, uint lightcnt){
+        switch(lightcnt){
+            case 1:
+            render.ubo.v1 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            break;
+            case 2:
+            render.ubo.v2 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            break;
+            case 3:
+            render.ubo.v3 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            break;
+            case 4:
+            render.ubo.v4 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            break;
+            case 5:
+            render.ubo.v5 = vec4(pos.x, pos.y, pos.z, lightcnt);
+            break;
+            default:
+            throw runtime_error("Fatal light error");
+            break;
+        }
+    }
     void Update(GLFWkeyfun keyfun){
         glfwSetKeyCallback(render.window, keyfun);
         glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
