@@ -50,15 +50,12 @@ class Prop{
     }
     void updateProp(vec4 *vertex, vec3 pPos, vec2 speed){
         if(enablec == true){
-            vec3 Hpos = vec3(-pos.x, pos.y, -pos.z);
-            propcolision.calculateCollision(vertex, begpos, Hpos);
-            pos = vec3(-Hpos.x, Hpos.y, -Hpos.z);
+            propcolision.calculateCollisionProp(vertex, begpos, pos);
             propcolision.updateLastCoord(pos);
         }
         if(enablep == true){
             propcolision.physwork(pos);
         }
-        changepos(vertex);
         if(inRange(pPos.z - propcolision.borders.y-1, pPos.z + propcolision.borders.y+1, -pos.z)&&inRange(pPos.x - propcolision.borders.x-1, pPos.x + propcolision.borders.x+1, -pos.x)&&enablepi==true){
             if(enablepip == true){
                 pos.z-=speed.y;
@@ -68,5 +65,6 @@ class Prop{
         }else{
             playerinteracted = false;
         }
+        changepos(vertex);
     }
 };
