@@ -135,6 +135,15 @@ void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec
 }
 
 float packColor(vec3 color) {
+	if(color.r < 5){
+		color.r = 5;
+	}
+	if(color.g < 5){
+		color.g = 5;
+	}
+	if(color.b < 5){
+		color.b = 5;
+	}
     return color.r+(color.g*0.001)+(color.b*0.000001);
 }
 
