@@ -2,7 +2,7 @@
 
 #include "CollWork.hpp"
 
-vec4 propvertex[9999999];
+vertexbuf propvertex[9999999];
 
 class Prop{
     private:
@@ -27,28 +27,28 @@ class Prop{
         propcolision.uph = updown.x;
         propcolision.allowdown = allwdown;
     }
-    void saveprop(vec4 *vertex){
+    void saveprop(vertexbuf *vertex){
         for(int i = begpos; i != finpos; i++){
-            propvertex[i].x = vertex[i].x;
-            propvertex[i].y = vertex[i].y;
-            propvertex[i].z = vertex[i].z;
+            propvertex[i].vertexpos.x = vertex[i].vertexpos.x;
+            propvertex[i].vertexpos.y = vertex[i].vertexpos.y;
+            propvertex[i].vertexpos.z = vertex[i].vertexpos.z;
         }
     }
-    void changepos(vec4 *vertex){
+    void changepos(vertexbuf *vertex){
         for(int i = begpos; i != finpos; i++){
-            vertex[i].x = propvertex[i].x + pos.x;
-            vertex[i].y = propvertex[i].y + pos.y;
-            vertex[i].z = propvertex[i].z + pos.z;
+            vertex[i].vertexpos.x = propvertex[i].vertexpos.x + pos.x;
+            vertex[i].vertexpos.y = propvertex[i].vertexpos.y + pos.y;
+            vertex[i].vertexpos.z = propvertex[i].vertexpos.z + pos.z;
         }
     }
-    void rotatemod(vec4 *vertex, float angle, vec3 vector){
+    void rotatemod(vertexbuf *vertex, float angle, vec3 vector){
         for(int i = begpos; i != finpos; i++){
-            vertex[i].x = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).x + pos.x;
-            vertex[i].y = rotate(vec3(propvertex[i].x, vertex[i].y, propvertex[i].z), angle, vector).y;
-            vertex[i].z = rotate(vec3(propvertex[i].x, propvertex[i].y, propvertex[i].z), angle, vector).z + pos.z; 
+            vertex[i].vertexpos.x = rotate(vec3(propvertex[i].vertexpos.x, propvertex[i].vertexpos.y, propvertex[i].vertexpos.z), angle, vector).x + pos.x;
+            vertex[i].vertexpos.y = rotate(vec3(propvertex[i].vertexpos.x, vertex[i].vertexpos.y, propvertex[i].vertexpos.z), angle, vector).y;
+            vertex[i].vertexpos.z = rotate(vec3(propvertex[i].vertexpos.x, propvertex[i].vertexpos.y, propvertex[i].vertexpos.z), angle, vector).z + pos.z; 
         }
     }
-    void updateProp(vec4 *vertex, vec3 pPos, vec2 speed){
+    void updateProp(vertexbuf *vertex, vec3 pPos, vec2 speed){
         if(enablec == true){
             propcolision.calculateCollisionProp(vertex, begpos, pos);
             propcolision.updateLastCoord(pos);

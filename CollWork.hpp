@@ -1,12 +1,8 @@
 #include <iostream>
 
-#include <glm/glm.hpp>
+#include "Animation.hpp"
 
 #include <glm/gtx/rotate_vector.hpp>
-
-using namespace std;
-
-using namespace glm;
 
 class CollWork{
     public:
@@ -52,14 +48,14 @@ class CollWork{
             colide = false;
         }
     }
-    void calculateCollision(vec4 *vertex, int totalvertex, vec3 &pos){
+    void calculateCollision(vertexbuf *vertex, int totalvertex, vec3 &pos){
         for(int i = 0; i != totalvertex; i++){
-            vertexCollision(vertex[i], pos);
+            vertexCollision(vertex[i].vertexpos, pos);
         }
     }
-    void calculateCollisionProp(vec4 *vertex, int totalvertex, vec3 &pos){
+    void calculateCollisionProp(vertexbuf *vertex, int totalvertex, vec3 &pos){
         for(int i = 0; i != totalvertex; i++){
-            vertexCollisionProp(vertex[i], pos);
+            vertexCollisionProp(vertex[i].vertexpos, pos);
         }
     }
 };

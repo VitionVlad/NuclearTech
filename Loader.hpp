@@ -2,6 +2,8 @@
 
 #include <cstring>
 
+#include <MagmaVK/MagmaVK.hpp>
+
 #include <stdio.h>
 
 #include <fstream>
@@ -14,16 +16,26 @@ using namespace glm;
 
 vec4 lvertex[9999999];
 
+vec3 lnormals[9999999];
+
+vec2 luv[9999999];
+
 ivec3 lvertexcol[9999999];
 
 int indices[9999999];
 
-void loadobj(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec3 pos){
+int nindices[9999999];
+
+int uindices[9999999];
+
+void loadobj(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos){
     FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
 	string arg;
 	int line = 1;
+	int nline = 1;
+	int uvline = 1;
 	int faceline = 0;
 	while (1) {
 		char lineHeader[128];
@@ -55,22 +67,40 @@ void loadobj(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec
 			line++;
 		}
 
+		if (strcmp(lineHeader, "vn") == 0) {
+			fscanf(obj, "%f %f %f \n", &lnormals[nline].x, &lnormals[nline].y, &lnormals[nline].z);
+			nline++;
+		}
+
+		if (strcmp(lineHeader, "vt") == 0) {
+			fscanf(obj, "%f %f \n", &luv[uvline].x, &luv[uvline].y);
+			uvline++;
+		}
+
 		if (strcmp(lineHeader, "f") == 0) {
-			fscanf(obj, "%d %d %d \n", &indices[faceline], &indices[faceline+1], &indices[faceline+2]);
+			fscanf(obj, "%d/%d/%d %d/%d/%d %d/%d/%d \n", &indices[faceline], &uindices[faceline], &nindices[faceline], &indices[faceline+1], &uindices[faceline+1], &nindices[faceline+1], &indices[faceline+2], &uindices[faceline+2], &nindices[faceline+2]);
 			faceline = faceline + 3;
 		}
 	}
 	fclose(obj);
     for(int i = 0; i != faceline; i++){
-        vertex[i+begvertpos].x = lvertex[indices[i]].x + pos.x;
-		vertex[i+begvertpos].y = lvertex[indices[i]].y + pos.y;
-		vertex[i+begvertpos].z = lvertex[indices[i]].z + pos.z;
-		vertex[i+begvertpos].w = 1.0f;
+        vertex[i+begvertpos].vertexpos.x = lvertex[indices[i]].x + pos.x;
+		vertex[i+begvertpos].vertexpos.y = lvertex[indices[i]].y + pos.y;
+		vertex[i+begvertpos].vertexpos.z = lvertex[indices[i]].z + pos.z;
+
+		vertex[i+begvertpos].normals.x = lnormals[nindices[i]].x + pos.x;
+		vertex[i+begvertpos].normals.y = lnormals[nindices[i]].y + pos.y;
+		vertex[i+begvertpos].normals.z = lnormals[nindices[i]].z + pos.z;
+
+		vertex[i+begvertpos].uv.x = luv[uindices[i]].x;
+		vertex[i+begvertpos].uv.y = luv[uindices[i]].y;
+		vertex[i+begvertpos].vertexpos.w = 1.0f;
+
         totalvert++;
     }
 }
 
-void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec3 pos){
+void loadply(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -117,7 +147,7 @@ void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec
 		}
 	}
 	for(int i = 0; i != line; i++){
-		fscanf(obj, "%f %f %f", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z);
+		fscanf(obj, "%f %f %f %f %f %f %f %f", &lvertex[i].x, &lvertex[i].y, &lvertex[i].z, &lnormals[i].x, &lnormals[i].y, &lnormals[i].z, &luv[i].x, &luv[i].y);
 		lvertex[i].w = 1;
 	}
 	for(int i = 0; i != faceline*3; i+=3){
@@ -126,10 +156,18 @@ void loadply(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec
 	}
 	fclose(obj);
     for(int i = 0; i != faceline*3; i++){
-        vertex[i+begvertpos].x = lvertex[indices[i]].x + pos.x;
-		vertex[i+begvertpos].y = lvertex[indices[i]].y + pos.y;
-		vertex[i+begvertpos].z = lvertex[indices[i]].z + pos.z;
-		vertex[i+begvertpos].w = 1.0f;
+        vertex[i+begvertpos].vertexpos.x = lvertex[indices[i]].x + pos.x;
+		vertex[i+begvertpos].vertexpos.y = lvertex[indices[i]].y + pos.y;
+		vertex[i+begvertpos].vertexpos.z = lvertex[indices[i]].z + pos.z;
+
+		vertex[i+begvertpos].normals.x = lnormals[indices[i]].x + pos.x;
+		vertex[i+begvertpos].normals.y = lnormals[indices[i]].y + pos.y;
+		vertex[i+begvertpos].normals.z = lnormals[indices[i]].z + pos.z;
+
+		vertex[i+begvertpos].uv.x = luv[indices[i]].x;
+		vertex[i+begvertpos].uv.y = luv[indices[i]].y;
+
+		vertex[i+begvertpos].vertexpos.w = 1.0f;
         totalvert++;
     }
 }
@@ -147,7 +185,7 @@ float packColor(vec3 color) {
     return color.r+(color.g*0.001)+(color.b*0.000001);
 }
 
-void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos, vec3 pos){
+void loadplycolor(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -203,10 +241,12 @@ void loadplycolor(const char* path, vec4 *vertex, int &totalvert, int begvertpos
 	}
 	fclose(obj);
     for(int i = 0; i != faceline*3; i++){
-        vertex[i+begvertpos].x = lvertex[indices[i]].x + pos.x;
-		vertex[i+begvertpos].y = lvertex[indices[i]].y + pos.y;
-		vertex[i+begvertpos].z = lvertex[indices[i]].z + pos.z;
-		vertex[i+begvertpos].w = packColor(lvertexcol[indices[i]]);
+		vertex[i+begvertpos].vertexpos.x = lvertex[indices[i]].x + pos.x;
+		vertex[i+begvertpos].vertexpos.y = lvertex[indices[i]].y + pos.y;
+		vertex[i+begvertpos].vertexpos.z = lvertex[indices[i]].z + pos.z;
+		vertex[i+begvertpos].vertexcol.x = lvertexcol[indices[i]].x + pos.x;
+		vertex[i+begvertpos].vertexcol.y = lvertexcol[indices[i]].y + pos.y;
+		vertex[i+begvertpos].vertexcol.z = lvertexcol[indices[i]].z + pos.z;
         totalvert++;
     }
 }

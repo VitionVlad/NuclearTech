@@ -2,12 +2,6 @@
 
 #include <thread>
 
-#include <MagmaVK/MagmaVK.hpp>
-
-#include "Prop.hpp"
-
-#include "Animation.hpp"
-
 #include "Gui.hpp"
 
 float pSpeed = 0.1;
@@ -50,15 +44,15 @@ class NuclearTechVk{
         render.Init();
     }
     void objwork(const char* path, int begpos, vec3 pos){
-        loadobj(path, render.vertexpos, render.totalv, begpos, pos);
+        loadobj(path, render.vertex, render.totalv, begpos, pos);
     }
     void plywork(const char* path, int begpos, bool color, vec3 pos){
         switch(color){
             case 0:
-            loadply(path, render.vertexpos, render.totalv, begpos, pos);
+            loadply(path, render.vertex, render.totalv, begpos, pos);
             break;
             case 1:
-            loadplycolor(path, render.vertexpos, render.totalv, begpos, pos);
+            loadplycolor(path, render.vertex, render.totalv, begpos, pos);
             break;
         }
     }
@@ -80,29 +74,26 @@ class NuclearTechVk{
         }
         prop.pos = vec3(0, 0, 0);
         prop.finpos = render.totalv;
-        prop.saveprop(render.vertexpos);
+        prop.saveprop(render.vertex);
         prop.setsize(updown, border, allwdown);
     }
+    float packColor(vec3 color) {
+        if(color.r < 5){
+            color.r = 5;
+        }
+        if(color.g < 5){
+            color.g = 5;
+        }
+        if(color.b < 5){
+            color.b = 5;
+        }
+    return color.r+(color.g*0.001)+(color.b*0.000001);
+}
     void light(vec3 pos, float color, uint lightcnt){
-        switch(lightcnt){
-            case 1:
-            render.ubo.v1 = vec4(pos.x, pos.y, pos.z, color);
-            break;
-            case 2:
-            render.ubo.v2 = vec4(pos.x, pos.y, pos.z, color);
-            break;
-            case 3:
-            render.ubo.v3 = vec4(pos.x, pos.y, pos.z, color);
-            break;
-            case 4:
-            render.ubo.v4 = vec4(pos.x, pos.y, pos.z, color);
-            break;
-            case 5:
-            render.ubo.v5 = vec4(pos.x, pos.y, pos.z, color);
-            break;
-            default:
+        if(lightcnt > 100){
             throw runtime_error("Fatal light error");
-            break;
+        }else{
+            render.ubo.massive[lightcnt] = vec4(pos.x, pos.y, pos.z, color);
         }
     }
     void Update(GLFWkeyfun keyfun){
@@ -119,7 +110,7 @@ class NuclearTechVk{
             speed.y = 0;
         }
         if(collisionenable == true){
-            colision.calculateCollision(render.vertexpos, render.totalv, render.pos);
+            colision.calculateCollision(render.vertex, render.totalv, render.pos);
         }
         if(mouselook == true){
             render.rot.x = rawm.x / sensivity;
