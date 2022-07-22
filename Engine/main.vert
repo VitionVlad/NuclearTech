@@ -1,19 +1,23 @@
 #version 450
 
-layout(binding = 0) uniform uniformbuf {
+layout(binding = 0) uniform umvp {
     mat4 mvp;
-    vec4 v1;
-    vec4 v2;
-    vec4 v3;
-    vec4 v4;
-    vec4 v5;    
+    vec4 massive[100];
 } ubo;
 
 layout(location = 0) in vec4 vertpos;
 
-layout(location = 0) out vec3 vertcolor;
+layout(location = 1) in ivec3 vertcol;
 
-layout(location = 1) out vec3 fragpos;
+layout(location = 2) in vec3 normals;
+
+layout(location = 3) in vec2 uv;
+
+layout(location = 0) out ivec3 vertcolor;
+
+layout(location = 1) out vec3 normal;
+
+layout(location = 2) out vec2 uvs;
 
 vec3 unpackColor(float f) {
     vec3 color;
@@ -29,7 +33,8 @@ void main() {
         vertcolor = unpackColor(vertpos.z);
     }else{
         gl_Position = ubo.mvp * vec4(vertpos.x, -vertpos.y, vertpos.z, 1.0);
-        vertcolor = unpackColor(vertpos.w);
-        fragpos = vec3(vertpos.x, vertpos.y, vertpos.z);
+        vertcolor = vertcol;
     }
+    normal = normals;
+    uvs = uv;
 }
