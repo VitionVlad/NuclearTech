@@ -66,13 +66,13 @@ class NuclearTechVk{
         prop.begpos = render.totalv;
         switch (modeltype){
         case 0:
-        objwork("App/Models/prop.ply", render.totalv, vec3(0, 0, 0));
+        objwork(pathtomodel, render.totalv, vec3(0, 0, 0));
             break;
          case 1:
-        plywork("App/Models/prop.ply", render.totalv, false, vec3(0, 0, 0));
+        plywork(pathtomodel, render.totalv, false, vec3(0, 0, 0));
             break;
          case 2:
-        plywork("App/Models/prop.ply", render.totalv, true, vec3(0, 0, 0));
+        plywork(pathtomodel, render.totalv, true, vec3(0, 0, 0));
             break;
         default:
         throw runtime_error("Error: Unknown model type");
