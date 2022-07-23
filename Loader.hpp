@@ -28,7 +28,7 @@ int nindices[9999999];
 
 int uindices[9999999];
 
-void loadobj(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos){
+void loadobj(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos, float mdParam){
     FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -87,6 +87,7 @@ void loadobj(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos
         vertex[i+begvertpos].vertexpos.x = lvertex[indices[i]].x + pos.x;
 		vertex[i+begvertpos].vertexpos.y = lvertex[indices[i]].y + pos.y;
 		vertex[i+begvertpos].vertexpos.z = lvertex[indices[i]].z + pos.z;
+		vertex[i+begvertpos].vertexpos.w = mdParam;
 
 		vertex[i+begvertpos].normals.x = lnormals[nindices[i]].x + pos.x;
 		vertex[i+begvertpos].normals.y = lnormals[nindices[i]].y + pos.y;
@@ -100,7 +101,7 @@ void loadobj(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos
     }
 }
 
-void loadply(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos){
+void loadply(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos, float mdParam){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -159,6 +160,7 @@ void loadply(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos
         vertex[i+begvertpos].vertexpos.x = lvertex[indices[i]].x + pos.x;
 		vertex[i+begvertpos].vertexpos.y = lvertex[indices[i]].y + pos.y;
 		vertex[i+begvertpos].vertexpos.z = lvertex[indices[i]].z + pos.z;
+		vertex[i+begvertpos].vertexpos.w = mdParam;
 
 		vertex[i+begvertpos].normals.x = lnormals[indices[i]].x + pos.x;
 		vertex[i+begvertpos].normals.y = lnormals[indices[i]].y + pos.y;
@@ -185,7 +187,7 @@ float packColor(vec3 color) {
     return color.r+(color.g*0.001)+(color.b*0.000001);
 }
 
-void loadplycolor(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos){
+void loadplycolor(const char* path, vertexbuf *vertex, int &totalvert, int begvertpos, vec3 pos, float mdParam){
 	FILE* obj;
 	//fopen(obj, path, "r");
     obj = fopen(path, "r");
@@ -244,6 +246,7 @@ void loadplycolor(const char* path, vertexbuf *vertex, int &totalvert, int begve
 		vertex[i+begvertpos].vertexpos.x = lvertex[indices[i]].x + pos.x;
 		vertex[i+begvertpos].vertexpos.y = lvertex[indices[i]].y + pos.y;
 		vertex[i+begvertpos].vertexpos.z = lvertex[indices[i]].z + pos.z;
+		vertex[i+begvertpos].vertexpos.w = mdParam;
 		vertex[i+begvertpos].vertexcol.x = lvertexcol[indices[i]].x + pos.x;
 		vertex[i+begvertpos].vertexcol.y = lvertexcol[indices[i]].y + pos.y;
 		vertex[i+begvertpos].vertexcol.z = lvertexcol[indices[i]].z + pos.z;
