@@ -43,30 +43,30 @@ class NuclearTechVk{
     void Init(){
         render.Init();
     }
-    void objwork(const char* path, int begpos, vec3 pos){
-        loadobj(path, render.vertex, render.totalv, begpos, pos);
+    void objwork(const char* path, int begpos, vec3 pos, float AditionalParameter){
+        loadobj(path, render.vertex, render.totalv, begpos, pos, AditionalParameter);
     }
-    void plywork(const char* path, int begpos, bool color, vec3 pos){
+    void plywork(const char* path, int begpos, bool color, vec3 pos, float AditionalParameter){
         switch(color){
             case 0:
-            loadply(path, render.vertex, render.totalv, begpos, pos);
+            loadply(path, render.vertex, render.totalv, begpos, pos, AditionalParameter);
             break;
             case 1:
-            loadplycolor(path, render.vertex, render.totalv, begpos, pos);
+            loadplycolor(path, render.vertex, render.totalv, begpos, pos, AditionalParameter);
             break;
         }
     }
-    void CreateProp(Prop prop, const char* pathtomodel, int modeltype, vec2 updown, vec2 border, float allwdown){
+    void CreateProp(Prop prop, const char* pathtomodel, int modeltype, vec2 updown, vec2 border, float allwdown, float AditionalParameter){
         prop.begpos = render.totalv;
         switch (modeltype){
         case 0:
-        objwork(pathtomodel, render.totalv, vec3(0, 0, 0));
+        objwork(pathtomodel, render.totalv, vec3(0, 0, 0), AditionalParameter);
             break;
          case 1:
-        plywork(pathtomodel, render.totalv, false, vec3(0, 0, 0));
+        plywork(pathtomodel, render.totalv, false, vec3(0, 0, 0), AditionalParameter);
             break;
          case 2:
-        plywork(pathtomodel, render.totalv, true, vec3(0, 0, 0));
+        plywork(pathtomodel, render.totalv, true, vec3(0, 0, 0), AditionalParameter);
             break;
         default:
         throw runtime_error("Error: Unknown model type");
@@ -87,8 +87,8 @@ class NuclearTechVk{
         if(color.b < 5){
             color.b = 5;
         }
-    return color.r+(color.g*0.001)+(color.b*0.000001);
-}
+        return color.r+(color.g*0.001)+(color.b*0.000001);
+    }
     void light(vec3 pos, float color, uint lightcnt){
         if(lightcnt > 100){
             throw runtime_error("Fatal light error");
