@@ -11,6 +11,7 @@ class Animation{
     public:
     int begpos;
     int framecount = 0;
+    float AditionalParameterToModels;
     string animfiles[60] = {
         "App/Models/prop.ply",
         "App/Models/propa1.ply"
@@ -20,15 +21,15 @@ class Animation{
     void Play(vec3 pos, vertexbuf *vertex, int &totalv){
         switch(format){
             case 0:
-            loadobj(animfiles[framecount].c_str(), vertex, totalvertex, begpos, pos);
+            loadobj(animfiles[framecount].c_str(), vertex, totalvertex, begpos, pos, AditionalParameterToModels);
             framecount++;
             break;
             case 1:
-            loadply(animfiles[framecount].c_str(), vertex, totalvertex, begpos, pos);
+            loadply(animfiles[framecount].c_str(), vertex, totalvertex, begpos, pos, AditionalParameterToModels);
             framecount++;
             break;
             case 2:
-            loadplycolor(animfiles[framecount].c_str(), vertex, totalvertex, begpos, pos);
+            loadplycolor(animfiles[framecount].c_str(), vertex, totalvertex, begpos, pos, AditionalParameterToModels);
             framecount++;
             break;
             default:
