@@ -107,7 +107,14 @@ class NuclearTechVk{
         render.totalv = endfor;
         for(int i = begshadowpos; i!= endfor;i++){
             if(render.vertex[i].vertexpos.y > groundlevelshadow){
-                render.vertex[render.totalv].vertexpos = vec4(render.vertex[i].vertexpos.x+render.vertex[i].vertexpos.y*(render.vertex[i].vertexpos.x-render.ubo.massive[lightsourcewithshadows].x), 0.01, render.vertex[i].vertexpos.z+render.vertex[i].vertexpos.y*(render.vertex[i].vertexpos.z-render.ubo.massive[lightsourcewithshadows].z), 2222);
+                vec3 lightpos = vec3(render.ubo.massive[lightsourcewithshadows].x, render.ubo.massive[lightsourcewithshadows].y, render.ubo.massive[lightsourcewithshadows].z);
+                vec3 vertexpos = vec3(render.vertex[i].vertexpos.x, render.vertex[i].vertexpos.y, render.vertex[i].vertexpos.z);
+                vec4 calculatedshadow;
+                calculatedshadow.x = (lightpos.y*vertexpos.x-lightpos.x*vertexpos.y)/lightpos.y-vertexpos.y;
+                calculatedshadow.y = 0.01;
+                calculatedshadow.z = (lightpos.y*vertexpos.z-lightpos.z*vertexpos.y)/lightpos.y-vertexpos.y;
+                calculatedshadow.w = 2222;
+                render.vertex[render.totalv].vertexpos = calculatedshadow;
                 render.totalv++;
             }
         }
