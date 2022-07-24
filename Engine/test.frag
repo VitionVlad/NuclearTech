@@ -18,6 +18,8 @@ layout(location = 3) in vec3 crntPos;
 
 layout(location = 4) in float param;
 
+//out col
+
 layout(location = 0) out vec4 outColor;
 
 vec3 unpackColor(float f) {
@@ -48,18 +50,25 @@ vec3 PointLight(vec4 pos, ivec2 textures){
     return fincol;
 }
 
+bool inRange(float low, float high, float mx){
+    return ((mx-high)*(mx-low) <= 0);
+}
+
 void main() {
 
     ivec2 texNum;
 
+    vec3 finlight = vec3(0.0);
     if(param == 0){
         texNum = ivec2(0, 1);
     }
-    vec3 finlight = vec3(0.0);
     for(int i = 0; i != 10; i++){
         if(ubo.massive[i].w != 0){
             finlight += PointLight(ubo.massive[i], texNum);
         }
     }
-    outColor = vec4(finlight, 1);
+    if(param == 2222){
+        finlight = vec3(0);
+    }
+    outColor = vec4(finlight, 0);
 }
