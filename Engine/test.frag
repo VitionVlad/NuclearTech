@@ -28,19 +28,27 @@ vec3 unpackColor(float f) {
     return color / 255;
 }
 
-void main() {
+vec3 PointLight(vec4 pos, ivec2 textures){
+    vec3 lightvec = pos.xyz - crntPos;
+    float dist = length(lightvec);
+    float a = 0.1f;
+    float b = 0.06f;
+    float inten = 1.0f / (a*dist*dist+b*dist+1.0f);
     float ambient = 0.01;
     vec3 finnorm = normalize(normal);
-    vec3 lightdir = normalize(ubo.massive[1].xyz - crntPos);
-
+    vec3 lightdir = normalize(lightvec);
     float diffuse = max(dot(finnorm, lightdir), 0.0f);
-
     float specular = 0.5f;
     vec3 viewdir = normalize(vec3(-ubo.pPos.x, ubo.pPos.y, -ubo.pPos.z) - crntPos);
     vec3 reflectdir = reflect(-lightdir, finnorm);
     vec3 halfway = normalize(viewdir + lightdir);
     float specam = pow(max(dot(finnorm, halfway), 0.0f), 16);
     float fspecular = specam * specular;
+    vec3 fincol = texture(texSampler, vec3(uvs, textures.x)).bgr * (diffuse*inten+ambient) + texture(texSampler, vec3(uvs, textures.y)).b * (fspecular * inten) * unpackColor(pos.w);
+    return fincol;
+}
+
+void main() {
 
     ivec2 texNum;
 
@@ -48,7 +56,9 @@ void main() {
         texNum = ivec2(0, 1);
     }
 
-    vec3 fincol = texture(texSampler, vec3(uvs, texNum.x)).bgr * unpackColor(ubo.massive[1].w) * (diffuse+ambient) + texture(texSampler, vec3(uvs, texNum.y)).b * fspecular;
-
-    outColor = vec4(fincol, 1);
+    for(int i = 0; i != 10; i++){
+        if(ubo.massive[i].w != 0){
+            outColor = vec4(PointLight(ubo.massive[i], texNum), 1);
+        }
+    }
 }
