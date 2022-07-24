@@ -55,10 +55,11 @@ void main() {
     if(param == 0){
         texNum = ivec2(0, 1);
     }
-
+    vec3 finlight = vec3(0.0);
     for(int i = 0; i != 10; i++){
         if(ubo.massive[i].w != 0){
-            outColor = vec4(PointLight(ubo.massive[i], texNum), 1);
+            finlight += PointLight(ubo.massive[i], texNum);
         }
     }
+    outColor = vec4(finlight, 1);
 }
