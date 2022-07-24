@@ -14,6 +14,8 @@ layout(location = 2) in vec3 normals;
 
 layout(location = 3) in vec2 uv;
 
+//to frag
+
 layout(location = 0) out vec3 vertcolor;
 
 layout(location = 1) out vec2 uvs;
@@ -30,6 +32,13 @@ vec3 unpackColor(float f) {
     color.g = floor((f-color.r)*1000);
     color.b = floor((((f-color.r)*1000)-color.g)*1000);
     return color / 255;
+}
+
+vec2 unpackTexNum(float packed){
+    vec2 result;
+    result.x = floor(packed);
+    result.y = (packed - result.x) * 10;
+    return result;
 }
 
 void main() {
