@@ -44,6 +44,7 @@ class NuclearTechVk{
     bool enableshadows = true;
     float groundlevelshadow = 0.01;
     int lightsourcewithshadows = 1;
+    int begshadowpos = 0;
     void Init(){
         render.Init();
     }
@@ -104,7 +105,7 @@ class NuclearTechVk{
     }
     void calculateShadows(){
         render.totalv = endfor;
-        for(int i = 0; i!= endfor;i++){
+        for(int i = begshadowpos; i!= endfor;i++){
             if(render.vertex[i].vertexpos.y > groundlevelshadow){
                 render.vertex[render.totalv].vertexpos = vec4(render.vertex[i].vertexpos.x+render.vertex[i].vertexpos.y*(render.vertex[i].vertexpos.x-render.ubo.massive[lightsourcewithshadows].x), 0.01, render.vertex[i].vertexpos.z+render.vertex[i].vertexpos.y*(render.vertex[i].vertexpos.z-render.ubo.massive[lightsourcewithshadows].z), 2222);
                 render.totalv++;
