@@ -45,12 +45,14 @@ class NuclearTechVk{
     float groundlevelshadow = 0.01;
     int lightsourcewithshadows = 1;
     int begshadowpos = 0;
+    int restoretotalv = render.totalv;
     void Init(){
         render.Init();
     }
     void objwork(const char* path, int begpos, vec3 pos, float AditionalParameter){
         loadobj(path, render.vertex, render.totalv, begpos, pos, AditionalParameter);
         endfor = render.totalv;
+        restoretotalv = render.totalv;
     }
     void plywork(const char* path, int begpos, bool color, vec3 pos, float AditionalParameter){
         switch(color){
@@ -62,6 +64,7 @@ class NuclearTechVk{
             break;
         }
         endfor = render.totalv;
+        restoretotalv = render.totalv;
     }
     void CreateProp(Prop prop, const char* pathtomodel, int modeltype, vec2 updown, vec2 border, float allwdown, float AditionalParameter){
         prop.begpos = render.totalv;
@@ -104,7 +107,7 @@ class NuclearTechVk{
         }
     }
     void calculateShadows(){
-        render.totalv = endfor;
+        render.totalv = restoretotalv;
         for(int i = begshadowpos; i!= endfor;i++){
             if(render.vertex[i].vertexpos.y > groundlevelshadow){
                 vec3 lightpos = vec3(render.ubo.massive[lightsourcewithshadows].x, render.ubo.massive[lightsourcewithshadows].y, render.ubo.massive[lightsourcewithshadows].z);
