@@ -110,9 +110,9 @@ class NuclearTechVk{
                 vec3 lightpos = vec3(render.ubo.massive[lightsourcewithshadows].x, render.ubo.massive[lightsourcewithshadows].y, render.ubo.massive[lightsourcewithshadows].z);
                 vec3 vertexpos = vec3(render.vertex[i].vertexpos.x, render.vertex[i].vertexpos.y, render.vertex[i].vertexpos.z);
                 vec4 calculatedshadow;
-                calculatedshadow.x = (lightpos.y*vertexpos.x-lightpos.x*vertexpos.y)/lightpos.y-vertexpos.y;
+                calculatedshadow.x = (lightpos.x*vertexpos.y-vertexpos.x*lightpos.y)/(vertexpos.y-lightpos.y);
                 calculatedshadow.y = 0.01;
-                calculatedshadow.z = (lightpos.y*vertexpos.z-lightpos.z*vertexpos.y)/lightpos.y-vertexpos.y;
+                calculatedshadow.z = (lightpos.z*vertexpos.y-vertexpos.z*lightpos.y)/(vertexpos.y-lightpos.y);
                 calculatedshadow.w = 2222;
                 render.vertex[render.totalv].vertexpos = calculatedshadow;
                 render.totalv++;
