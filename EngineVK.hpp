@@ -40,11 +40,16 @@ class NuclearTechVk{
     bool collisionenable;
     bool enablephysics;
     vec2 mouseupdown = vec2(1.5, -1.5);
+    int endfor = render.totalv;
+    bool enableshadows = true;
+    float groundlevelshadow = 0.01;
+    int lightsourcewithshadows = 1;
     void Init(){
         render.Init();
     }
     void objwork(const char* path, int begpos, vec3 pos, float AditionalParameter){
         loadobj(path, render.vertex, render.totalv, begpos, pos, AditionalParameter);
+        endfor = render.totalv;
     }
     void plywork(const char* path, int begpos, bool color, vec3 pos, float AditionalParameter){
         switch(color){
@@ -55,6 +60,7 @@ class NuclearTechVk{
             loadplycolor(path, render.vertex, render.totalv, begpos, pos, AditionalParameter);
             break;
         }
+        endfor = render.totalv;
     }
     void CreateProp(Prop prop, const char* pathtomodel, int modeltype, vec2 updown, vec2 border, float allwdown, float AditionalParameter){
         prop.begpos = render.totalv;
@@ -96,6 +102,15 @@ class NuclearTechVk{
             render.ubo.massive[lightcnt] = vec4(pos.x, pos.y, pos.z, color);
         }
     }
+    void calculateShadows(){
+        render.totalv = endfor;
+        for(int i = 0; i!= endfor;i++){
+            if(render.vertex[i].vertexpos.y > groundlevelshadow){
+                render.vertex[render.totalv].vertexpos = vec4(render.vertex[i].vertexpos.x+(render.vertex[i].vertexpos.x-render.ubo.massive[lightsourcewithshadows].x), 0.01, render.vertex[i].vertexpos.z+(render.vertex[i].vertexpos.z-render.ubo.massive[lightsourcewithshadows].z), 2222);
+                render.totalv++;
+            }
+        }
+    }
     void Update(GLFWkeyfun keyfun){
         glfwSetKeyCallback(render.window, keyfun);
         glfwGetCursorPos(render.window, &rawm.x, &rawm.y);
@@ -128,6 +143,9 @@ class NuclearTechVk{
         }
         if(enablephysics == true){
             colision.physwork(render.pos);
+        }
+        if(enableshadows == true){
+            calculateShadows();
         }
     }
     void End(){
